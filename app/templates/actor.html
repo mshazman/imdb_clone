@@ -1,4 +1,5 @@
 {% extends 'base.html'%}
+{% import 'bootstrap/wtf.html' as wtf %}
 {% block app_content %}
 <div class="container">
     <div class="col-lg-9 ">
@@ -13,10 +14,17 @@
                 <p>Birth Place: {{actor.birth_place}}</p>
                 <p>Industry: {{actor.industry}}</p></p>
                 <p>{{actor.get_likes()}} Likes</p>
-                <button class="btn btn-info btn-md btn-rounded">Like</button>
-                <button class="btn btn-danger btn-md btn-rounded">Delete</button>
-                <button class="btn btn-success btn-md btn-rounded">Edit</button>
-                <button class="btn btn-success btn-md btn-rounded">Add Awards</button>
+                {% if current_user.is_anonymous %}
+                {% elif actor.is_liked(current_user.id)%}
+                <a href="{{url_for('unlike',actor_id=actor.id)}}"><button class="btn btn-info btn-md btn-rounded">Unlike</button></a>
+                {% else %}
+                <a href="{{url_for('like',actor_id=actor.id)}}"><button class="btn btn-info btn-md btn-rounded">Like</button></a>
+                {% endif %}
+                {% if current_user.is_authenticated and current_user.is_admin() %}
+                <a href="{{url_for('delete_actor', actor_id=actor.id)}}"><button class="btn btn-danger btn-md btn-rounded">Delete</button></a>
+                <button class="btn btn-success btn-md btn-rounded" data-toggle="modal" data-target="#edit_actor">Edit</button>
+                <button class="btn btn-success btn-md btn-rounded" data-toggle="modal" data-target="#add_award">Add Awards</button>
+                {% endif %}
             </div>
         </div>
         <br>
@@ -91,4 +99,153 @@
         <br>
     </div>
 </div>
+
+
+<div class="container">
+    <div class="modal fade" id="add_award">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Award</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{url_for('add_award', actor_id=actor.id)}}" method="post">
+                        <div class="col-md-10">
+                            {{ wtf.quick_form(add_award) }}
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <div class="modal fade" id="edit_actor">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Actor</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{{url_for('edit_actor', actor_id=actor.id)}}">
+                        {{edit_actor_form.hidden_tag()}}
+                        <div class="form-group">
+                            {{edit_actor_form.name.label}}
+                            {{edit_actor_form.name(class='form-control', value=actor.name)}}
+                            {% for error in edit_actor_form.name.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-group">
+                            {{edit_actor_form.age.label}}
+                            {{edit_actor_form.age(class='form-control', value=actor.age)}}
+                            {% for error in edit_actor_form.age.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-group">
+                            {{edit_actor_form.birth_place.label}}
+                            {{edit_actor_form.birth_place(class='form-control', value=actor.birth_place)}}
+                            {% for error in edit_actor_form.birth_place.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-group">
+                            {{edit_actor_form.facebook_url.label}}
+                            {{edit_actor_form.facebook_url(class='form-control', value=actor.facebook_url)}}
+                            {% for error in edit_actor_form.facebook_url.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-group">
+                            {{edit_actor_form.twitter_url.label}}
+                            {{edit_actor_form.twitter_url(class='form-control', value=actor.twitter_url)}}
+                            {% for error in edit_actor_form.twitter_url.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-group">
+                            {{edit_actor_form.insta_url.label}}
+                            {{edit_actor_form.insta_url(class='form-control', value=actor.insta_url)}}
+                            {% for error in edit_actor_form.insta_url.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-group">
+                            {{edit_actor_form.bio.label}}
+                            {{edit_actor_form.bio(class='form-control', value=actor.bio)}}
+                            {% for error in edit_actor_form.bio.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-group">
+                            {{edit_actor_form.nationality.label}}
+                            {{edit_actor_form.nationality(class='form-control', value=actor.nationality)}}
+                            {% for error in edit_actor_form.nationality.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+
+                        <div class="form-group">
+                            {{edit_actor_form.spouse_name.label}}
+                            {{edit_actor_form.spouse_name(class='form-control', value=actor.spouse_name)}}
+                            {% for error in edit_actor_form.spouse_name.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-group">
+                            {{edit_actor_form.father_name.label}}
+                            {{edit_actor_form.father_name(class='form-control', value=actor.father_name)}}
+                            {% for error in edit_actor_form.father_name.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-group">
+                            {{edit_actor_form.mother_name.label}}
+                            {{edit_actor_form.mother_name(class='form-control', value=actor.mother_name)}}
+                            {% for error in edit_actor_form.mother_name.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+
+                        <div class="form-group">
+                            {{edit_actor_form.children.label}}
+                            {{edit_actor_form.children(class='form-control', value=actor.children)}}
+                            {% for error in edit_actor_form.children.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        {{edit_actor_form.submit(class='btn btn-primary')}}
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

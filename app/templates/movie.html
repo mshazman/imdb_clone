@@ -1,165 +1,339 @@
 {% extends 'base.html' %}}{% block app_content %}
+{% import 'bootstrap/wtf.html' as wtf %}
 <div class="container">
     <div class="row">
-    <div class="col-lg-9 ">
+        <div class="col-lg-9 ">
 
 
-        <div class="row blue-grey lighten-5 padding-10">
-            <div class="col-7">
-                <h1>{{movie.title}}</h1>
-                <p>Not Rated |
-                    {% if movie.genres %}
-                    {{movie.genres}}
-                    {% else %}
-                    None
-                    {% endif %}|
-                    {{movie.run_time}} minutes</p>
-            </div>
-            <div class="col-2">
-                <h1>{{movie.get_rating()[0]}}</h1>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-primary btn-md">Rate Now</button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="embed-responsive embed-responsive-16by9">
-                <iframe class="embed-responsive-item" src="{{movie.youtube}}"
-                        allowfullscreen></iframe>
-            </div>
-        </div>
-
-
-        <br>
-
-        <div class="row blue-grey lighten-5 padding-10">
-            <div class="row">
-                <div class="col">
-                    <h3 class="h3-respomsive">Description</h3>
+            <div class="row blue-grey lighten-5 padding-10">
+                <div class="col-7">
+                    <h1>{{movie.title}}</h1>
+                    <p>Not Rated |
+                        {% if movie.genres %}
+                        {{movie.genres}}
+                        {% else %}
+                        None
+                        {% endif %}|
+                        {{movie.run_time}} minutes</p>
+                </div>
+                <div class="col-2">
+                    <h1>{{movie.get_rating()[0]}}</h1>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary btn-md">Rate Now</button>
                 </div>
             </div>
             <div class="row">
-                <div class="col">
-                    <p>
-                        {{movie.description}}
-                    </p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <p>Directors: <span>{{movie.director}}</span><br>
-                        Writers: <span>{{movie.writer}}</span><br>
-                        Stars:
-                        {% for star in movie.cast[:4]%}
-                        <span><a href="url_for('actor', actor_id={{star.actor_id}})">{{star.actor_name}},</a></span>
-                        {% endfor %}
-                        <br>
-                    </p>
+                <div class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="{{movie.youtube}}"
+                            allowfullscreen></iframe>
                 </div>
             </div>
 
-        </div>
-        <br>
 
-        <div class="row blue-grey lighten-5">
-            <h3 class="h3-respomsive padding-10">Cast</h3>
-            <table class="table table-striped">
+            <br>
 
-                <tbody>
-                {% for cast in movie.cast %}
-                <tr>
-                    <td><a href="/actor/{{cast.actor_id}}">{{cast.actor_name}}</a></td>
-                    <td>{{cast.role_name}}</td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            <div class="row blue-grey lighten-5 padding-10">
+                <div class="row">
+                    <div class="col">
+                        <h3 class="h3-respomsive">Description</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p>
+                            {{movie.description}}
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p>Directors: <span>{{movie.director}}</span><br>
+                            Writers: <span>{{movie.writer}}</span><br>
+                            Stars:
+                            {% for star in movie.cast[:4]%}
+                            <span><a href="url_for('actor', actor_id={{star.actor_id}})">{{star.actor_name}},</a></span>
+                            {% endfor %}
+                            <br>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            <br>
+
+            <div class="row blue-grey lighten-5">
+                <h3 class="h3-respomsive padding-10">Cast</h3>
+                <table class="table table-striped">
+
+                    <tbody>
+                    {% for cast in movie.cast %}
+                    <tr>
+                        <td><a href="/actor/{{cast.actor_id}}">{{cast.actor_name}}</a></td>
+                        <td>{{cast.role_name}}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
 
 
-        </div>
-        <br>
-        <div class="row blue-grey lighten-5 padding-10">
-            <div class="row">
-                <div class="col">
-                    <h3 class="h3-respomsive">Storyline</h3>
+            </div>
+            <br>
+            <div class="row blue-grey lighten-5 padding-10">
+                <div class="row">
+                    <div class="col">
+                        <h3 class="h3-respomsive">Storyline</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <p>
+                            {{movie.storlyline}}
+                        </p>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
-                    <p>
-                        {{movie.storlyline}}
-                    </p>
-                </div>
+            <br>
+
+            <div class="row blue-grey lighten-5">
+                <h3 class="h3-respomsive padding-10">More Info</h3>
+                <table class="table table-striped">
+
+                    <tbody>
+                    <tr>
+                        <td>Country</td>
+                        <td>{{movie.country}}</td>
+                    </tr>
+                    <tr>
+                        <td>Languages</td>
+                        <td>{{movie.languages}}</td>
+                    </tr>
+                    <tr>
+                        <td>Release Date</td>
+                        <td>{{moment(movie.release_date).format('LL')}}</td>
+                    </tr>
+                    <tr>
+                        <td>Genres</td>
+                        <td>{{movie.genres}}</td>
+                    </tr>
+                    <tr>
+                        <td>Budget</td>
+                        <td>{{movie.budget}}M US Dollar</td>
+                    </tr>
+                    <tr>
+                        <td>Box Office Domestic</td>
+                        <td>{{movie.box_office_domestic}}M US Dollar</td>
+                    </tr>
+
+                    <tr>
+                        <td>Box Office Gross</td>
+                        <td>{{movie.box_office_gross}}M US Dollar</td>
+                    </tr>
+                    <tr>
+                        <td>Production Company</td>
+                        <td>{{movie.production_company}}</td>
+                    </tr>
+                    <tr>
+                        <td>Run Time</td>
+                        <td>{{movie.run_time}} Minutes</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
             </div>
-        </div>
-        <br>
-
-        <div class="row blue-grey lighten-5">
-            <h3 class="h3-respomsive padding-10">More Info</h3>
-            <table class="table table-striped">
-
-                <tbody>
-                <tr>
-                    <td>Country</td>
-                    <td>{{movie.country}}</td>
-                </tr>
-                <tr>
-                    <td>Languages</td>
-                    <td>{{movie.languages}}</td>
-                </tr>
-                <tr>
-                    <td>Release Date</td>
-                    <td>{{moment(movie.release_date).format('LL')}}</td>
-                </tr>
-                <tr>
-                    <td>Genres</td>
-                    <td>{{movie.genres}}</td>
-                </tr>
-                <tr>
-                    <td>Budget</td>
-                    <td>{{movie.budget}}M US Dollar</td>
-                </tr>
-                <tr>
-                    <td>Box Office Domestic</td>
-                    <td>{{movie.box_office_domestic}}M US Dollar</td>
-                </tr>
-
-                <tr>
-                    <td>Box Office Gross</td>
-                    <td>{{movie.box_office_gross}}M US Dollar</td>
-                </tr>
-                <tr>
-                    <td>Production Company</td>
-                    <td>{{movie.production_company}}</td>
-                </tr>
-                <tr>
-                    <td>Run Time</td>
-                    <td>{{movie.run_time}} Minutes</td>
-                </tr>
-                </tbody>
-            </table>
-
-
-        </div>
-        <br>
-        <div class="row blue-grey lighten-5 padding-10">
-            <h3 class="h3-responsive">Reviews</h3>
-            <div class="col-md-12">
-                <!--First review-->
-                {% for review in movie.reviews %}
+            <br>
+            <div class="row blue-grey lighten-5 padding-10">
+                <h3 class="h3-responsive">Reviews</h3>
+                <div class="col-md-12">
+                    <!--First review-->
+                    {% for review in movie.reviews %}
                     {% include '_review.html' %}
-                {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            {% if current_user.is_authenticated and current_user.is_admin()%}
+            <h3>Welcome Admin</h3>
+            <a href="{{url_for('delete_movie', movie_id=movie.id)}}"><button class="btn btn-danger btn-md">Delete</button></a>
+            <button class="btn btn-success btn-md" data-toggle="modal" data-target="#edit_movie">Edit</button>
+            <button class="btn btn-success btn-md" data-toggle="modal" data-target="#add_cast">Add Cast</button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="modal fade" id="add_cast">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Cast</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{url_for('add_cast', movie_id=movie.id)}}" method="post">
+                        <div class="col-md-10">
+                            {{ wtf.quick_form(cast_form) }}
+                        </div>
+                    </form>
+
+                </div>
+
             </div>
         </div>
     </div>
+</div>
 
-    <div class="col-lg-3">
-        {% if current_user.is_authenticated and current_user.is_admin()%}
-        <h3>Welcome Admin</h3>
-        <button class="btn btn-danger btn-md">Delete</button>
-        <button class="btn btn-success btn-md">Edit</button>
-        {% endif %}
+
+<div class="container">
+    <div class="modal fade" id="edit_movie">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Movie</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{{url_for('edit_movie', movie_id=movie.id)}}">
+                        {{edit_movie_form.hidden_tag()}}
+                        <div class="edit_movie_form-group">
+                            {{edit_movie_form.title.label}}
+                            {{edit_movie_form.title(class='form-control', value=movie.title)}}
+                            {% for error in edit_movie_form.title.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="edit_movie_form-group">
+                            {{edit_movie_form.industry.label}}
+                            {{edit_movie_form.industry(class='form-control', value=movie.industry)}}
+                            {% for error in edit_movie_form.industry.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="edit_movie_form-group">
+                            {{edit_movie_form.description.label}}
+                            {{edit_movie_form.description(class='form-control', value=movie.description)}}
+                            {% for error in edit_movie_form.description.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="edit_movie_form-group">
+                            {{edit_movie_form.writer.label}}
+                            {{edit_movie_form.writer(class='form-control', value=movie.writer)}}
+                            {% for error in edit_movie_form.writer.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="edit_movie_form-group">
+                            {{edit_movie_form.director.label}}
+                            {{edit_movie_form.director(class='form-control', value=movie.director)}}
+                            {% for error in edit_movie_form.director.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="edit_movie_form-group">
+                            {{edit_movie_form.storyline.label}}
+                            {{edit_movie_form.storyline(class='form-control', value=movie.storyline)}}
+                            {% for error in edit_movie_form.storyline.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="edit_movie_form-group">
+                            {{edit_movie_form.country.label}}
+                            {{edit_movie_form.country(class='form-control', value=movie.country)}}
+                            {% for error in edit_movie_form.country.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="edit_movie_form-group">
+                            {{edit_movie_form.languages.label}}
+                            {{edit_movie_form.languages(class='form-control', value=movie.languages)}}
+                            {% for error in edit_movie_form.languages.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+
+                        <div class="edit_movie_form-group">
+                            {{edit_movie_form.genres.label}}
+                            {{edit_movie_form.genres(class='form-control', value=movie.genres)}}
+                            {% for error in edit_movie_form.genres.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="edit_movie_form-group">
+                            {{edit_movie_form.budget.label}}
+                            {{edit_movie_form.budget(class='form-control', value=movie.budget)}}
+                            {% for error in edit_movie_form.budget.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="edit_movie_form-group">
+                            {{edit_movie_form.box_office_domestic.label}}
+                            {{edit_movie_form.box_office_domestic(class='form-control', value=movie.box_office_domestic)}}
+                            {% for error in edit_movie_form.box_office_domestic.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="edit_movie_form-group">
+                            {{edit_movie_form.box_office_gross.label}}
+                            {{edit_movie_form.box_office_gross(class='form-control', value=movie.box_office_gross)}}
+                            {% for error in edit_movie_form.box_office_gross.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="edit_movie_form-group">
+                            {{edit_movie_form.production_company.label}}
+                            {{edit_movie_form.production_company(class='form-control', value=movie.production_company)}}
+                            {% for error in edit_movie_form.production_company.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="edit_movie_form-group">
+                            {{edit_movie_form.run_time.label}}
+                            {{edit_movie_form.run_time(class='form-control', value=movie.run_time)}}
+                            {% for error in edit_movie_form.run_time.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="edit_movie_form-group">
+                            {{edit_movie_form.youtube_trailer.label}}
+                            {{edit_movie_form.youtube_trailer(class='form-control', value=movie.youtube)}}
+                            {% for error in edit_movie_form.youtube_trailer.error %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+                        </div>
+                        {{edit_movie_form.submit(class='btn btn-primary')}}
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>
-</div>
+
+
 {% endblock %}
+
+

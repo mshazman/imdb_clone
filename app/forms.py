@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import FileField, TextAreaField, DateField, TextField, StringField, PasswordField, BooleanField, SubmitField
+from wtforms import FileField, SelectField, TextAreaField, DateField, TextField, StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, EqualTo, Email, ValidationError
 from flask_wtf.file import FileField, FileAllowed
 from app.models import User
@@ -62,10 +62,15 @@ class UploadReview(FlaskForm):
     review = TextAreaField('Review')
     submit = SubmitField('Post Review')
 
+class AddAward(FlaskForm):
+    name = StringField('Award Name')
+    year = StringField('Award Year')
+    submit = SubmitField('Add')
 
 class UploadRating(FlaskForm):
-    rating = StringField('Rating')
-    submit = SubmitField('Rate')
+    rating = SelectField('Rating', choices=[(1,1), (2,2), (3, 3), (4, 4), (5,5)], validators=[DataRequired()])
+    review = StringField("Review")
+    submit = SubmitField('Post')
 
 
 class AddActor(FlaskForm):
@@ -76,7 +81,7 @@ class AddActor(FlaskForm):
     twitter_url = StringField('Twitter Profile')
     insta_url = StringField('Instagram Profile')
     bio = StringField('Bio')
-    birthday = DateField('Birthday', format = '%d/%m/%Y' )
+    birthday = DateField('Date of Birth', format = '%d/%m/%Y' )
     nationality = StringField('Nationality')
     spouse_name = StringField('Spouse Name')
     father_name = StringField('Father Name')
@@ -104,4 +109,21 @@ class EditMovie(FlaskForm):
     run_time = StringField('Run Time')
     youtube_trailer = StringField('Youtube Trailer')
     submit = SubmitField('Edit')
+
+class EditActor(FlaskForm):
+    name = StringField('Name')
+    age = StringField('Age: ')
+    birth_place = StringField('Birth Place')
+    facebook_url = StringField('Facebook Profile')
+    twitter_url = StringField('Twitter Profile')
+    insta_url = StringField('Instagram Profile')
+    bio = StringField('Bio')
+    nationality = StringField('Nationality')
+    spouse_name = StringField('Spouse Name')
+    father_name = StringField('Father Name')
+    mother_name = StringField('Mother Name')
+    children = StringField('Children')
+    profile_img = FileField(label="Profile Image", validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Image Only!')])
+    submit = SubmitField('Update')
+
 

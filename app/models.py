@@ -104,6 +104,7 @@ class Ratings(db.Model):
     rating = db.Column(db.Integer, index=True)
     movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    review_text = db.Column(db.Text)
 
     def __repr__(self):
         return f' Rating id: {self.rating_id} Rating: {self.rating}'

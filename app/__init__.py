@@ -17,4 +17,4 @@ moment = Moment(app)
 
 
 
-from app import models, routes
+from app import models, routes, movie, actor
