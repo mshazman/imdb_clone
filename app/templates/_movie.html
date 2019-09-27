@@ -1,0 +1,22 @@
+<div class="row blue-grey lighten-5">
+    <div class="col-3 ">
+        <br>
+        <img src="../static/img/poster_1.jpg" alt="" class="img-fluid rounded">
+    </div>
+    <div class="col-9">
+        <br>
+        <h4 class="h4-responsive">{{movie.title}}</h4>
+        <p>Rating: 5.0</p>
+        <p class="text-fluid">
+            {{movie.description}}
+        </p>
+        <p>Director: <span style="color:blue;">{{movie.director}}</span> Stars:
+            {% for cast in movie.cast[:3] %}
+            <a style="color:blue;">{{cast.actor_name}},</a>
+            {% endfor %}
+        </p>
+        <p>Industry: <span style="color:blue;">{{movie.industry}}</span></p>
+        <p>Box Office: <span>{{movie.box_office_gross}}M US Dollor</span></p>
+    </div>
+</div>
+<br>

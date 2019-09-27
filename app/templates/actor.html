@@ -1,0 +1,94 @@
+{% extends 'base.html'%}
+{% block app_content %}
+<div class="container">
+    <div class="col-lg-9 ">
+        <div class="row blue-grey lighten-5 padding-10">
+            <div class="col-4">
+                <img src="../static/img/actor_1.jpg" alt="Actor Image Not Avialable" class="img-fluid rounded-circle"
+                     height="200px" , width="200px">
+            </div>
+            <div class="col-8">
+                <h3 class="h3-responsive">{{actor.name}}</h3>
+                <p>Age: {{actor.age}} Year</p>
+                <p>Birth Place: {{actor.birth_place}}</p>
+                <p>Industry: {{actor.industry}}</p></p>
+                <p>{{actor.get_likes()}} Likes</p>
+                <button class="btn btn-info btn-md btn-rounded">Like</button>
+                <button class="btn btn-danger btn-md btn-rounded">Delete</button>
+                <button class="btn btn-success btn-md btn-rounded">Edit</button>
+                <button class="btn btn-success btn-md btn-rounded">Add Awards</button>
+            </div>
+        </div>
+        <br>
+        <div class="row blue-grey lighten-5 padding-10">
+            <h3 class="h3-respomsive">Bio</h3>
+            <p class="text-fluid">
+                {{actor.bio}}
+            </p>
+        </div>
+        <br>
+
+        <div class="row blue-grey lighten-5">
+            <h3 class="h3-respomsive padding-10">More Info</h3>
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <td>Birthday</td>
+                    <td>{{moment(actor.birthday).format('LL')}}</td>
+                </tr>
+                <tr>
+                    <td>Nationality</td>
+                    <td>{{actor.nationality}}</td>
+                </tr>
+                <tr>
+                    <td>Spouse</td>
+                    <td>{{actor.spouse}}</td>
+                </tr>
+                <tr>
+                    <td>Father</td>
+                    <td>{{actor.father_name}}</td>
+                </tr>
+                <tr>
+                    <td>Mother</td>
+                    <td>{{actor.mother_name}}</td>
+                </tr>
+                <tr>
+                    <td>Children</td>
+                    <td>{{actor.children}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <div class="row blue-grey lighten-5">
+            <h3 class="h3-respomsive padding-10">Filmography</h3>
+            <table class="table table-striped">
+                <tbody>
+                {% for cast in actor.movies %}
+                <tr>
+                    <td><a href="{{url_for('movie',movie_id=cast.movie.id)}}">{{cast.movie.title}}</a></td>
+                    <td>{{moment(cast.movie.release_date).format('YYYY')}}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <div class="row blue-grey lighten-5">
+            <h3 class="h3-respomsive padding-10">Awards</h3>
+            <table class="table table-striped">
+
+                <tbody>
+                {% for award in actor.awards %}
+                <tr>
+                    <td>{{award.name}}</td>
+                    <td>{{award.year}}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <br>
+    </div>
+</div>
+{% endblock %}

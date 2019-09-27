@@ -1,0 +1,24 @@
+{% extends 'base.html'%}
+{% block app_content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2 class="h2-responsive">Top 100 Rated Movies</h2>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="col-lg-8 ">
+
+        {% for movie in movies%}
+
+        {% include '_movie.html'%}
+
+        {% endfor %}
+
+    </div>
+    {% include '_pagination.html'%}
+</div>
+
+{% endblock %}

@@ -35,7 +35,6 @@ def signup():
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    print("hii")
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = LoginForm()
@@ -49,7 +48,7 @@ def login():
         flash("User Is loginned")
         return redirect(url_for('index'))
     print("Form is not validated", form.errors)
-    return render_template("login.html", form=form)
+    return render_template("index.html", form=form)
 
 @app.route('/movies', methods=['GET'])
 def get_movies():
@@ -61,6 +60,10 @@ def get_movies():
         data[movie.id]['link'] = f"{app.config['SERVER_NAME']}/{movie.id}"
     return data
 
+@app.route('/actors', methods=['GET'])
+def get_actors():
+    actors = Actor.query.all()
+    return render_template('actors.html', title='Actors', actors=actors)
 
 @app.route('/movie', methods=['GET','POST'])
 def upload_movie():
