@@ -5,7 +5,7 @@
     </div>
     <div class="col-9">
         <br>
-        <h4 class="h4-responsive">{{movie.title}}</h4>
+        <h4 class="h4-responsive"><a href="{{url_for('movie',movie_id=movie.id)}}">{{movie.title}}</a></h4>
         <p>Rating: 5.0</p>
         <p class="text-fluid">
             {{movie.description}}

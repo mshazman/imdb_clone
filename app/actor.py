@@ -11,12 +11,14 @@ from sqlalchemy import desc
 @app.route('/actors', methods=['GET'])
 def actors():
     actors = Actor.query.all()
-    return render_template('actors.html', title='Actors', actors=actors)
+    login_form = LoginForm()
+    signup_form = RegistrationForm()
+    return render_template('actors.html', title='Actors', actors=actors, login_form=login_form, signup_form=signup_form)
 
 @app.route('/actor/<actor_id>', methods=['GET'])
 def get_actor(actor_id):
     login_form = LoginForm()
-    signup_form = RegistrationForm
+    signup_form = RegistrationForm()
     add_award = AddAward()
     edit_actor_form = EditActor()
     actor = Actor.query.get(actor_id)

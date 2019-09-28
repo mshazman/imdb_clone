@@ -157,8 +157,8 @@
                 <h3 class="h3-responsive">Reviews</h3>
                 <div class="col-md-12">
                     <!--First review-->
-                    {% for user_rating in movie.ratings %}
-                    {% include '_review.html' %}
+                    {% for rating in movie.rating %}
+                        {% include '_review.html' %}
                     {% endfor %}
                 </div>
             </div>

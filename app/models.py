@@ -17,7 +17,6 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     user_type = db.Column(db.String(), default='normal')
     ratings = db.relationship('Ratings', backref='user', lazy='dynamic')
-    reviews = db.relationship('Reviews', backref='user', lazy='dynamic')
     likes = db.relationship('Likes', backref= 'user')
 
     def __repr__(self):
@@ -61,7 +60,6 @@ class Movie(db.Model):
     box_office_gross = db.Column(db.Integer, index=True)
     production_company = db.Column(db.String(120), index=True)
     run_time = db.Column(db.String(120), index=True)
-    reviews = db.relationship('Reviews', backref='movie', lazy='dynamic')
     rating = db.relationship('Ratings', backref='movie', lazy='dynamic')
     cast = db.relationship('Cast', backref='movie', lazy='dynamic')
     youtube = db.Column(db.String(128))
@@ -88,14 +86,6 @@ class Movie(db.Model):
 
     def get_cast(self):
         return self.cast.all()
-class Reviews(db.Model):
-    review_id = db.Column(db.Integer, index=True, primary_key=True)
-    review_text = db.Column(db.Text)
-    movie_id = db.Column(db.Integer, db.ForeignKey('movie.id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-    def __repr__(self):
-        return f' Review id: {self.review_id}, Review Text: {self.review_text}'
 
 class Ratings(db.Model):
     rating_id = db.Column(db.Integer, index=True, primary_key=True)

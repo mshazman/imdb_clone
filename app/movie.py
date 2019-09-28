@@ -114,13 +114,15 @@ def delete_movie(movie_id):
 
 @app.route('/movies', methods=['GET'])
 def movies():
-    data = {}
+    # data = {}
     movies = Movie.query.all()
-    for movie in movies:
-        data[movie.id] = {}
-        data[movie.id]['title'] = movie.title
-        data[movie.id]['link'] = f"{app.config['SERVER_NAME']}/{movie.id}"
-    return data
+    login_form = LoginForm()
+    signup_form = RegistrationForm()
+    # for movie in movies:
+    #     data[movie.id] = {}
+    #     data[movie.id]['title'] = movie.title
+    #     data[movie.id]['link'] = f"{app.config['SERVER_NAME']}/{movie.id}"
+    return render_template('movies.html', movies=movies, title='Movies', login_form=login_form, signup_form=signup_form)
 
 @app.route('/movie/<movie_id>', methods=['GET'])
 def movie(movie_id):

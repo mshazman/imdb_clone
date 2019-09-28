@@ -5,7 +5,7 @@
     </div>
     <div class="col-9">
         <br>
-        <h4 class="h4-responsive">{{actor.name}}</h4>
+        <h4 class="h4-responsive"><a href="{{url_for('get_actor',actor_id=actor.id)}}">{{actor.name}}</a></h4>
             <p>Likes: {{actor.get_likes()}}</p>
             <p class="text-fluid">
                 {{actor.bio}}

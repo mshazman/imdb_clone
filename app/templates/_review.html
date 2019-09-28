@@ -1,16 +1,19 @@
-<div class="media mb-1">
+<{% if rating.review_text %}
+div class="media mb-1">
     <a class="media-left waves-light">
         <img class="rounded-circle" src="https://mdbootstrap.com/img/Photos/Avatars/avatar-13.jpg"
              alt="Generic placeholder image">
     </a>
     <div class="media-body">
 
-        {% if user_rating.review_text != '' %}
-        <h4 class="media-heading">{{user_rating.user.username}}</h4>
-        <p>Rating: {{movie.get_users_rating(user_rating.user_id).rating}}/5 </p>
+
+        <h4 class="media-heading">{{rating.user.username}}</h4>
+        <p>Rating: {{movie.get_users_rating(rating.user_id).rating}}/5 </p>
         <p>
-            {{user_rating.review_text}}
+            {{rating.review_text}}
         </p>
+
     </div>
 </div>
 <hr>
+{% endif %}
