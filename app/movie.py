@@ -34,6 +34,7 @@ def add_movie():
         db.session.commit()
         flash("Movie Added Succefully")
         return redirect(url_for('index'))
+    print(movie_form.release_date.data)
     print(movie_form.errors)
     flash("Please fill all mandatory fields", movie_form.errors)
 
