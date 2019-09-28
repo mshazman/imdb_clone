@@ -91,23 +91,45 @@ def add_review(movie_id):
 def rating(movie_id):
     movie = Movie.query.filter_by(id=movie_id).first()
     if not movie:
-        return render_template('404.html')
+        abort(404)
     else:
-        rating = movie.rating.filter_by(user_id = current_user.id).first()
-        if rating:
-            flash(f'You already have rated this movie {rating.rating}')
+        rating_form = UploadRating()
+        if rating_form.validate_on_submit():
+            rating = Ratings(rating=int(rating_form.rating.data),
+                             movie_id=movie_id,
+                             user_id=current_user.id,
+                             review_text=rating_form.review.data)
+            db.session.add(rating)
+            db.session.commit()
+            flash("Rated Succfully")
             return redirect(url_for('movie', movie_id=movie_id))
-        else:
-            form = UploadRating()
-            if form.validate_on_submit():
-                rating = Ratings(rating=int(form.rating.data),
-                                 movie_id=movie_id,
-                                 user_id=current_user.id)
-                db.session.add(rating)
-                db.session.commit()
-                flash("Rated Succfully")
-                return redirect(url_for('movie', movie_id=movie_id))
-            return render_template('upload.html', form=form, form_name='Add Review')
+        print("Hello", rating_form.errors)
+        return redirect(url_for('movie', movie_id=movie_id))
+
+
+@app.route('/movie/<movie_id>/rating/edit', methods=['POST', 'GET'])
+def edit_rating(movie_id):
+    movie = Movie.query.get(movie_id)
+    current_user_rating  = movie.get_users_rating(current_user.id)
+    rating_form = UploadRating()
+    if rating_form.validate_on_submit():
+        current_user_rating.rating = rating_form.rating.data
+        current_user_rating.review_text = rating_form.review.data
+        db.session.commit()
+        flash("Your changes has been saved")
+        return redirect(url_for('movie', movie_id=movie_id))
+    return redirect(url_for('movie', movie_id=movie_id))
+
+
+@app.route('/movie/<movie_id>/rating/delete')
+def delete_rating(movie_id):
+    movie = Movie.query.get(movie_id)
+    current_user_rating = movie.get_users_rating(current_user.id)
+    db.session.delete(current_user_rating)
+    db.session.commit()
+    flash("You deleted your review")
+    return redirect(url_for('movie', movie_id=movie_id))
+
 
 
 

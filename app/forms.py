@@ -68,7 +68,7 @@ class AddAward(FlaskForm):
     submit = SubmitField('Add')
 
 class UploadRating(FlaskForm):
-    rating = SelectField('Rating', choices=[(1,1), (2,2), (3, 3), (4, 4), (5,5)], validators=[DataRequired()])
+    rating = SelectField('Rating', choices=[('1',1), ('2',2), ('3', 3), ('4', 4), ('5',5)], validators=[DataRequired()])
     review = StringField("Review")
     submit = SubmitField('Post')
 

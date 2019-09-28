@@ -129,8 +129,9 @@ def movie(movie_id):
     signup_form = RegistrationForm()
     edit_movie_form = EditMovie()
     movie = Movie.query.get(movie_id)
+    rating_form = UploadRating()
     if not movie:
         abort(400)
     else:
-        return render_template('movie.html', movie=movie, cast_form=cast_form, login_form=login_form, signup_form=signup_form, edit_movie_form=edit_movie_form)
+        return render_template('movie.html', movie=movie, rating_form=rating_form, cast_form=cast_form, login_form=login_form, signup_form=signup_form, edit_movie_form=edit_movie_form)
 

@@ -17,10 +17,20 @@
                         {{movie.run_time}} minutes</p>
                 </div>
                 <div class="col-2">
-                    <h1>{{movie.get_rating()[0]}}</h1>
+                    <h1>{{ '{:1.1f}'.format(movie.get_rating()[0]) }}</h1>
+                    {% if current_user.is_anonymous %}
+                    {% elif movie.get_users_rating(current_user.id)%}
+                    <p>Your Rating: {{movie.get_users_rating(current_user.id).rating}}</p>
+                    {% endif %}
                 </div>
                 <div class="col-3">
-                    <button class="btn btn-primary btn-md">Rate Now</button>
+                    {% if current_user.is_anonymous %}
+                    {% elif movie.get_users_rating(current_user.id) %}
+                    <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#edit_rating">Edit Rating</button>
+                    {% else %}
+
+                    <button class="btn btn-primary btn-md" data-toggle="modal" data-target="#add_rating">Rate </button>
+                    {% endif %}
                 </div>
             </div>
             <div class="row">
@@ -147,7 +157,7 @@
                 <h3 class="h3-responsive">Reviews</h3>
                 <div class="col-md-12">
                     <!--First review-->
-                    {% for review in movie.reviews %}
+                    {% for user_rating in movie.ratings %}
                     {% include '_review.html' %}
                     {% endfor %}
                 </div>
@@ -333,6 +343,59 @@
     </div>
 </div>
 
+
+<div class="container">
+    <div class="modal fade" id="add_rating">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Review</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{url_for('rating', movie_id=movie.id)}}" method="post">
+                        <div class="col-md-10">
+                            {{ wtf.quick_form(rating_form) }}
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="modal fade" id="edit_rating">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Review</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{url_for('edit_rating', movie_id=movie.id)}}" method="post">
+                        <div class="col-md-10">
+                            {{ wtf.quick_form(rating_form) }}
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <div class="options">
+                        <a href="{{url_for('delete_rating', movie_id=movie.id)}}"><button class="btn btn-md btn-danger">Delete Rating</button> </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 

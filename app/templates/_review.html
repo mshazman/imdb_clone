@@ -4,10 +4,12 @@
              alt="Generic placeholder image">
     </a>
     <div class="media-body">
-        <h4 class="media-heading">{{review.user.username}}</h4>
-        <p>Rating: {{movie.get_users_rating(review.user_id).rating}}/5 </p>
+
+        {% if user_rating.review_text != '' %}
+        <h4 class="media-heading">{{user_rating.user.username}}</h4>
+        <p>Rating: {{movie.get_users_rating(user_rating.user_id).rating}}/5 </p>
         <p>
-            {{review.review_text}}
+            {{user_rating.review_text}}
         </p>
     </div>
 </div>

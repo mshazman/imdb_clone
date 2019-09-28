@@ -42,6 +42,7 @@ class User(UserMixin, db.Model):
         return True if self.user_type == 'admin' else False
 
 
+
 class Movie(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
@@ -70,8 +71,6 @@ class Movie(db.Model):
     def __repr__(self):
         return f'Movie Name: {self.title}, industy: {self.industry}'
 
-    def get_reviews(self):
-        return self.reviews.all()
 
     def get_rating(self):
         ratings = self.rating.all()
@@ -89,7 +88,6 @@ class Movie(db.Model):
 
     def get_cast(self):
         return self.cast.all()
-
 class Reviews(db.Model):
     review_id = db.Column(db.Integer, index=True, primary_key=True)
     review_text = db.Column(db.Text)
