@@ -41,7 +41,7 @@ class UploadMovie(FlaskForm):
     storyline = TextField('Storyline')
     country = StringField('Origin Country')
     languages = StringField('Languages')
-    release_date = DateField('Release Date',format='%d/%m/%Y')
+    release_date = DateField('Release Date', format = '%d/%m/%Y' )
     genres = StringField('Genres')
     budget = StringField('Budget')
     box_office_domestic = StringField('Box Office Domestic')
