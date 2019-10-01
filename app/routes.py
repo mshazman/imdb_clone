@@ -7,7 +7,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from wtforms import ValidationError
 from werkzeug.utils import secure_filename
 from sqlalchemy import desc
-
+from base64 import b64encode
 
 
 
@@ -160,4 +160,20 @@ def unlike(actor_id):
     return redirect(url_for('get_actor', actor_id=actor_id))
 
 
+
+@app.route('/profile_pic', methods=['GET', 'POST'])
+def profile_pic():
+    form = ProfilePic()
+    return render_template('_bootstrap_form.html', form=form)
+
+
+
+
+@app.route('/profile_img/<actor_id>', methods=['GET', 'POST'])
+def profile(actor_id):
+    actor = Actor.query.get(actor_id)
+    img_blob = actor.profile_pic
+    data = b64encode(img_blob).decode("utf-8")
+    string = 'data:;base64, '+ str(data)
+    return f"<img src='{string}' >"
 

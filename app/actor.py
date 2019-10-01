@@ -7,6 +7,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 from wtforms import ValidationError
 from werkzeug.utils import secure_filename
 from sqlalchemy import desc
+from base64 import b64encode
 
 @app.route('/actors', methods=['GET'])
 def actors():
@@ -22,17 +23,26 @@ def get_actor(actor_id):
     add_award = AddAward()
     edit_actor_form = EditActor()
     actor = Actor.query.get(actor_id)
+    if not actor.profile_pic is None:
+        profile_pic = b64encode(actor.profile_pic).decode("utf-8")
+    else:
+        profile_pic = actor.profile_pic
     if actor is None:
         abort(404)
     else:
-        return render_template('actor.html', edit_actor_form=edit_actor_form, add_award=add_award, actor=actor, login_form=login_form, signup_form=signup_form)
+        return render_template('actor.html', edit_actor_form=edit_actor_form, add_award=add_award, actor=actor, login_form=login_form, signup_form=signup_form, profile_pic=profile_pic)
 
 
 @app.route('/actor', methods=['GET', 'POST'])
 def add_actor():
     actor_form = AddActor()
     movie_form = UploadMovie()
+
     if actor_form.validate_on_submit():
+        if actor_form.profile_img is None:
+            profile_pic = actor_form.profile_img.data.read()
+        else:
+            profile_pic = actor_form.profile_img.data
         actor = Actor(name=actor_form.name.data,
                       age= actor_form.age.data,
                       birth_place=actor_form.birth_place.data,
@@ -45,12 +55,11 @@ def add_actor():
                       spouse_name=actor_form.spouse_name.data,
                       father_name=actor_form.father_name.data,
                       mother_name=actor_form.mother_name.data,
-                      children=actor_form.children.data
+                      children=actor_form.children.data,
+                      profile_pic=profile_pic
                       )
         db.session.add(actor)
         db.session.commit()
-        actor_id = Actor.query.filter_by(name=actor_form.name.data).all()[-1]
-        name = 'actor' + str(actor_id) + '.jpg'
         flash("Actor Added Successfully")
         return redirect(url_for('admin'))
     print(actor_form.errors)

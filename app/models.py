@@ -127,6 +127,7 @@ class Actor(db.Model):
     father_name = db.Column(db.String(64))
     mother_name = db.Column(db.String(64))
     children = db.Column(db.Integer)
+    profile_pic = db.Column(db.LargeBinary)
     movies = db.relationship('Cast', backref='actor', lazy='dynamic')
     likes = db.relationship('Likes', backref='actor', lazy='dynamic')
     awards = db.relationship('Awards', backref='actor', lazy='dynamic')

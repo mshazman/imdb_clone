@@ -123,7 +123,12 @@ class EditActor(FlaskForm):
     father_name = StringField('Father Name')
     mother_name = StringField('Mother Name')
     children = StringField('Children')
-    profile_img = FileField(label="Profile Image", validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Image Only!')])
+    profile_img = FileField(label="Profile Image", validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Image Only!'), DataRequired()])
     submit = SubmitField('Update')
 
+
+class ProfilePic(FlaskForm):
+    name = StringField('Name')
+    profile_img = FileField(label="Profile Image")
+    submit = SubmitField('Update')
 

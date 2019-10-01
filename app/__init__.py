@@ -7,7 +7,7 @@ from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 
 
-app = Flask(__name__)
+application = app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, render_as_batch=True)

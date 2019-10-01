@@ -20,7 +20,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{url_for('add_movie')}}" method="post">
+                    <form action="{{url_for('add_movie')}}" method="post" enctype="multipart/form-data">
                         <div class="col-md-10">
                             {{ wtf.quick_form(movie_form) }}
                         </div>
@@ -45,7 +45,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{url_for('add_actor')}}" method="post">
+                    <form action="{{url_for('add_actor')}}" method="post" enctype="multipart/form-data">
                         <div class="col-md-10">
                             {{ wtf.quick_form(actor_form) }}
                         </div>
