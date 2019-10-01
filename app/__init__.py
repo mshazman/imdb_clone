@@ -7,14 +7,44 @@ from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 
 
-application = app = Flask(__name__)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db, render_as_batch=True)
-login = LoginManager(app)
-bootstrap = Bootstrap(app)
-moment = Moment(app)
+db = SQLAlchemy()
+migrate = Migrate()
+login = LoginManager()
+bootstrap = Bootstrap()
+moment = Moment()
+
+def create_app(config):
+
+    app = Flask(__name__)
+    app.config.from_object(config)
+    db.init_app(app)
+    migrate.init_app(app, db, render_as_batch=True)
+    login.init_app(app)
+    bootstrap.init_app(app)
+    moment.init_app(app)
+
+
+    from app.actor import bp as actor_bp
+    app.register_blueprint(actor_bp)
+
+    from app.movie import bp as movie_bp
+    app.register_blueprint(movie_bp)
+
+    from app.user import bp as user_bp
+    app.register_blueprint(user_bp)
+
+    from app.error import bp as error_bp
+    app.register_blueprint(error_bp)
+
+    return app
+
+
+app = create_app(Config)
+
+from app import models, routes
 
 
 
-from app import models, routes, movie, actor
+
+
+

@@ -55,7 +55,7 @@ IMDB : {{title}}
                     </li>
                     {% if current_user.is_authenticated and current_user.is_admin()%}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('admin')}}">Admin Panel</a>
+                        <a class="nav-link" href="{{url_for('user.profile')}}">Admin Panel</a>
                     </li>
                     {% endif %}
                     {% if current_user.is_anonymous %}
@@ -71,7 +71,7 @@ IMDB : {{title}}
                         <a class="nav-link disabled" href="#">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url_for('logout')}}">Logout</a>
+                        <a class="nav-link" href="{{url_for('user.logout')}}">Logout</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -100,7 +100,7 @@ IMDB : {{title}}
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <form action="{{url_for('login')}}" method="post">
+                    <form action="{{url_for('user.login')}}" method="post">
                         {{login_form.hidden_tag()}}
                         <div class="md-form">
                             <i class="fa fa-envelope prefix"></i>

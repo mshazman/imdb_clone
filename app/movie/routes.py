@@ -1,15 +1,12 @@
-from app import app
+from app.movie import bp
 from flask import render_template, url_for, flash, redirect, abort
 from app.forms import *
 from app.models import *
 from app import db
-from flask_login import current_user, login_user, logout_user, login_required
-from wtforms import ValidationError
-from werkzeug.utils import secure_filename
-from sqlalchemy import desc
+from flask_login import current_user, login_required
 
 
-@app.route('/movie', methods=['GET','POST'])
+@bp.route('/movie', methods=['GET','POST'])
 def add_movie():
     movie_form = UploadMovie()
     # try:
@@ -38,10 +35,10 @@ def add_movie():
     print(movie_form.errors)
     flash("Please fill all mandatory fields", movie_form.errors)
 
-    return redirect(url_for('admin'))
+    return redirect(url_for('user.profile'))
 
 
-@app.route('/movie/<movie_id>/cast', methods=['GET', 'POST'])
+@bp.route('/movie/<movie_id>/cast', methods=['GET', 'POST'])
 def add_cast(movie_id):
     movie = Movie.query.filter_by(id=movie_id).first()
     if not movie:
@@ -70,7 +67,7 @@ def add_cast(movie_id):
     #     return redirect(url_for('index'))
     return redirect(url_for('movie', movie_id))
 
-@app.route('/movie/<movie_id>/edit', methods=['GET', 'POST'])
+@bp.route('/movie/<movie_id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_movie(movie_id):
     if not current_user.is_admin():
@@ -102,7 +99,7 @@ def edit_movie(movie_id):
     return redirect(url_for('movie', movie_id))
 
 
-@app.route('/movie/<movie_id>/delete', methods=['GET', 'POST'])
+@bp.route('/movie/<movie_id>/delete', methods=['GET', 'POST'])
 @login_required
 def delete_movie(movie_id):
     if not current_user.is_admin():
@@ -111,10 +108,10 @@ def delete_movie(movie_id):
     db.session.delete(movie)
     db.session.commit()
     flash("Movie Deleted")
-    return redirect(url_for('admin'))
+    return redirect(url_for('user.profile'))
 
 
-@app.route('/movies', methods=['GET'])
+@bp.route('/movies', methods=['GET'])
 def movies():
     # data = {}
     movies = Movie.query.all()
@@ -123,10 +120,10 @@ def movies():
     # for movie in movies:
     #     data[movie.id] = {}
     #     data[movie.id]['title'] = movie.title
-    #     data[movie.id]['link'] = f"{app.config['SERVER_NAME']}/{movie.id}"
+    #     data[movie.id]['link'] = f"{bp.config['SERVER_NAME']}/{movie.id}"
     return render_template('movies.html', movies=movies, title='Movies', login_form=login_form, signup_form=signup_form)
 
-@app.route('/movie/<movie_id>', methods=['GET'])
+@bp.route('/movie/<movie_id>', methods=['GET'])
 def movie(movie_id):
     cast_form = UploadCast()
     login_form = LoginForm()

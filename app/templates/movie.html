@@ -167,7 +167,7 @@
         <div class="col-lg-3">
             {% if current_user.is_authenticated and current_user.is_admin()%}
             <h3>Welcome Admin</h3>
-            <a href="{{url_for('delete_movie', movie_id=movie.id)}}"><button class="btn btn-danger btn-md">Delete</button></a>
+            <a href="{{url_for('movie.delete_movie', movie_id=movie.id)}}"><button class="btn btn-danger btn-md">Delete</button></a>
             <button class="btn btn-success btn-md" data-toggle="modal" data-target="#edit_movie">Edit</button>
             <button class="btn btn-success btn-md" data-toggle="modal" data-target="#add_cast">Add Cast</button>
             {% endif %}
@@ -186,7 +186,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{url_for('add_cast', movie_id=movie.id)}}" method="post">
+                    <form action="{{url_for('movie.add_cast', movie_id=movie.id)}}" method="post">
                         <div class="col-md-10">
                             {{ wtf.quick_form(cast_form) }}
                         </div>
@@ -211,7 +211,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="{{url_for('edit_movie', movie_id=movie.id)}}">
+                    <form method="post" action="{{url_for('movie.edit_movie', movie_id=movie.id)}}">
                         {{edit_movie_form.hidden_tag()}}
                         <div class="edit_movie_form-group">
                             {{edit_movie_form.title.label}}
@@ -355,7 +355,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{url_for('rating', movie_id=movie.id)}}" method="post">
+                    <form action="{{url_for('user.rating', movie_id=movie.id)}}" method="post">
                         <div class="col-md-10">
                             {{ wtf.quick_form(rating_form) }}
                         </div>
@@ -379,7 +379,7 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{url_for('edit_rating', movie_id=movie.id)}}" method="post">
+                    <form action="{{url_for('user.edit_rating', movie_id=movie.id)}}" method="post">
                         <div class="col-md-10">
                             {{ wtf.quick_form(rating_form) }}
                         </div>
@@ -388,7 +388,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="options">
-                        <a href="{{url_for('delete_rating', movie_id=movie.id)}}"><button class="btn btn-md btn-danger">Delete Rating</button> </a>
+                        <a href="{{url_for('user.delete_rating', movie_id=movie.id)}}"><button class="btn btn-md btn-danger">Delete Rating</button> </a>
                     </div>
                 </div>
 

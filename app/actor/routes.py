@@ -1,24 +1,23 @@
-from app import app
+from app.actor import bp
+from app.forms import LoginForm, RegistrationForm, AddAward, EditActor,AddActor, UploadMovie
 from flask import render_template, url_for, flash, redirect, abort
-from app.forms import *
 from app.models import *
 from app import db
-from flask_login import current_user, login_user, logout_user, login_required
-from wtforms import ValidationError
-from werkzeug.utils import secure_filename
-from sqlalchemy import desc
+from flask_login import current_user, login_required
 from base64 import b64encode
 
-@app.route('/actors', methods=['GET'])
+
+@bp.route('/actors', methods=['GET'])
 def actors():
     actors = Actor.query.all()
     login_form = LoginForm()
     signup_form = RegistrationForm()
     return render_template('actors.html', title='Actors', actors=actors, login_form=login_form, signup_form=signup_form)
 
-@app.route('/actor/<actor_id>', methods=['GET'])
+
+@bp.route('/actor/<actor_id>', methods=['GET'])
 def get_actor(actor_id):
-    login_form = LoginForm()
+    login_form =LoginForm()
     signup_form = RegistrationForm()
     add_award = AddAward()
     edit_actor_form = EditActor()
@@ -33,7 +32,7 @@ def get_actor(actor_id):
         return render_template('actor.html', edit_actor_form=edit_actor_form, add_award=add_award, actor=actor, login_form=login_form, signup_form=signup_form, profile_pic=profile_pic)
 
 
-@app.route('/actor', methods=['GET', 'POST'])
+@bp.route('/actor', methods=['GET', 'POST'])
 def add_actor():
     actor_form = AddActor()
     movie_form = UploadMovie()
@@ -65,7 +64,7 @@ def add_actor():
     print(actor_form.errors)
     return render_template('admin.html', actor_form=actor_form, movie_form=movie_form)
 
-@app.route('/actor/<actor_id>/delete', methods=['GET', 'POST'])
+@bp.route('/actor/<actor_id>/delete', methods=['GET', 'POST'])
 def delete_actor(actor_id):
     actor = Actor.query.get(actor_id)
     db.session.delete(actor)
@@ -73,7 +72,7 @@ def delete_actor(actor_id):
     flash("Actor Deleted")
     return redirect(url_for('admin'))
 
-@app.route('/actor/<actor_id>/award', methods=['GET', 'POST'])
+@bp.route('/actor/<actor_id>/award', methods=['GET', 'POST'])
 def add_award(actor_id):
     actor = Actor.query.filter_by(id=actor_id).first()
     if not actor:
@@ -89,7 +88,7 @@ def add_award(actor_id):
         return redirect(url_for('get_actor', actor_id=actor_id))
     return redirect(url_for('get_actor', actor_id=actor_id))
 
-@app.route('/actor/<actor_id>/edit', methods=['GET', 'POST'])
+@bp.route('/actor/<actor_id>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_actor(actor_id):
     if not current_user.is_admin():
@@ -113,6 +112,7 @@ def edit_actor(actor_id):
         db.session.commit()
         flash("Your Changes have been Saved")
 
+        return redirect(url_for('get_actor', actor_id=actor_id))
         return redirect(url_for('get_actor', actor_id=actor_id))
 
     return redirect(url_for('get_actor', actor_id=actor_id))
