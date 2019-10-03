@@ -6,15 +6,6 @@ from app import db
 from flask_login import current_user, login_user, logout_user, login_required
 
 
-@bp.route('/')
-@bp.route('/index')
-def index():
-    movie = Movie.query.all()
-    login_form = LoginForm()
-    signup_form = RegistrationForm()
-    return render_template('index.html', movies=movie, login_form=login_form, signup_form=signup_form)
-
-
 @bp.route('/login', methods=['POST', 'GET'])
 def login():
     if current_user.is_authenticated:

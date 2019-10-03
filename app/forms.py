@@ -193,8 +193,8 @@ class EditActor(FlaskForm):
     profile_img = FileField(label="Profile Image", validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Image Only!'), DataRequired()])
     submit = SubmitField('Update')
 
-class Search(FlaskForm):
-    search = StringField('Search')
+class SearchForm(FlaskForm):
+    search_query = StringField('Search')
     submit = SubmitField('Search')
 
 
