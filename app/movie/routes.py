@@ -113,14 +113,9 @@ def delete_movie(movie_id):
 
 @bp.route('/movies', methods=['GET'])
 def movies():
-    # data = {}
     movies = Movie.query.all()
     login_form = LoginForm()
     signup_form = RegistrationForm()
-    # for movie in movies:
-    #     data[movie.id] = {}
-    #     data[movie.id]['title'] = movie.title
-    #     data[movie.id]['link'] = f"{bp.config['SERVER_NAME']}/{movie.id}"
     return render_template('movies.html', movies=movies, title='Movies', login_form=login_form, signup_form=signup_form)
 
 @bp.route('/movie/<movie_id>', methods=['GET'])
