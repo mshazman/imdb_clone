@@ -1,8 +1,10 @@
 from app import app
 from app.forms import LoginForm, RegistrationForm, SearchForm
-from flask import render_template, url_for, flash, redirect
+from flask import render_template, url_for, flash, redirect, Response, jsonify
 from app.models import *
 from app import db
+from app import celery
+from app.tasks import *
 
 
 @app.route('/')
@@ -40,5 +42,34 @@ def search():
     return render_template('search_result.html', movies=movies, total=total, search_form=search_form)
 
 
+@app.route('/extract/<movie_id>')
+def extract(movie_id):
+    task = extract_movies.delay([movie_id])
+    dic = {}
+    dic['id'] = task.id
+    # return jsonify(dic)
+    flash(f'Task Created...{task.id}')
+    return jsonify(dic)
+    # return redirect(url_for('index'))
 
+@app.route('/task/status/<task_id>')
+def status(task_id):
+    status = task_status(task_id)
+    return jsonify(status)
 
+@app.route('/task/result/<task_id>')
+def result(task_id):
+    task = celery.AsyncResult(task_id)
+    print(task.state)
+    if task.state=='PENDING':
+        return "Task is Being Executed"
+    elif task.state=='SUCCESS':
+        path = './app/files/'+ task.result
+        with open(path, 'r') as file:
+            return Response(file.read(),
+                            mimetype="json",
+                            headers={"Content-disposition":
+                            "attachment; filename="+task.result})
+    else:
+        return task.info
+    return "Some Error"
