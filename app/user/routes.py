@@ -18,7 +18,7 @@ def login():
             return redirect(url_for('index'))
         login_user(user, remember=form.remember_me.data)
         flash("You are successfully login")
-        return redirect(url_for('index'))
+        return redirect(url_for('user.user', user_id=current_user.id))
     return render_template("index.html", form=form)
 
 @bp.route('/logout')
@@ -105,4 +105,11 @@ def profile():
     movie_form = UploadMovie()
     return render_template('admin.html', actor_form=actor_form, movie_form=movie_form)
 
+@login_required
+@bp.route('/user/<user_id>')
+def user(user_id):
+    actor_form = AddActor()
+    movie_form = UploadMovie()
+    user = User.query.get(user_id)
+    return render_template('user.html', actor_form=actor_form, movie_form=movie_form, user=user)
 

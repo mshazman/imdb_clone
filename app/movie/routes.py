@@ -7,7 +7,10 @@ from flask_login import current_user, login_required
 
 
 @bp.route('/movie', methods=['GET','POST'])
+@login_required
 def add_movie():
+    if not current_user.is_admin():
+        abort(401)
     movie_form = UploadMovie()
     # try:
     if movie_form.validate_on_submit():
@@ -39,7 +42,10 @@ def add_movie():
 
 
 @bp.route('/movie/<movie_id>/cast', methods=['GET', 'POST'])
+@login_required
 def add_cast(movie_id):
+    if not current_user.is_admin():
+        abort(401)
     movie = Movie.query.filter_by(id=movie_id).first()
     if not movie:
         return render_template('404.html')

@@ -33,7 +33,10 @@ def get_actor(actor_id):
 
 
 @bp.route('/actor', methods=['GET', 'POST'])
+@login_required
 def add_actor():
+    if not current_user.is_admin():
+        abort(401)
     actor_form = AddActor()
     movie_form = UploadMovie()
 
@@ -64,8 +67,12 @@ def add_actor():
     print(actor_form.errors)
     return render_template('admin.html', actor_form=actor_form, movie_form=movie_form)
 
+
 @bp.route('/actor/<actor_id>/delete', methods=['GET', 'POST'])
+@login_required
 def delete_actor(actor_id):
+    if not current_user.is_admin():
+        abort(401)
     actor = Actor.query.get(actor_id)
     db.session.delete(actor)
     db.session.commit()
@@ -87,6 +94,7 @@ def add_award(actor_id):
         flash("Award Added Successfully")
         return redirect(url_for('get_actor', actor_id=actor_id))
     return redirect(url_for('get_actor', actor_id=actor_id))
+
 
 @bp.route('/actor/<actor_id>/edit', methods=['GET', 'POST'])
 @login_required
