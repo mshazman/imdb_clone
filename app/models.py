@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import login
 from app.search import add_to_index, remove_from_index, query_index
+from base64 import b64encode
 
 
 @login.user_loader
@@ -49,8 +50,10 @@ class SearchableMixin(object):
         for obj in cls.query:
             add_to_index(cls.__tablename__, obj)
 
+
 db.event.listen(db.session, 'before_commit', SearchableMixin.before_commit)
 db.event.listen(db.session, 'after_commit', SearchableMixin.after_commit)
+
 
 class User(UserMixin, db.Model):
 
@@ -84,11 +87,9 @@ class User(UserMixin, db.Model):
         return True if self.user_type == 'admin' else False
 
 
-
 class Movie(SearchableMixin, db.Model):
 
     __searchable__ = ['title']
-
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), unique=True, index=True)
     industry = db.Column(db.String(120), index=True)
@@ -103,17 +104,15 @@ class Movie(SearchableMixin, db.Model):
     budget = db.Column(db.Integer, index=True)
     box_office_domestic = db.Column(db.Integer, index=True)
     box_office_gross = db.Column(db.Integer, index=True)
+    poster = db.Column(db.LargeBinary)
     production_company = db.Column(db.String(120), index=True)
     run_time = db.Column(db.String(120), index=True)
     rating = db.relationship('Ratings', backref='movie', lazy='dynamic')
     cast = db.relationship('Cast', backref='movie', lazy='dynamic')
     youtube = db.Column(db.String(128))
 
-
-
     def __repr__(self):
         return f'Movie Name: {self.title}, industy: {self.industry}'
-
 
     def get_rating(self):
         ratings = self.rating.all()
@@ -131,6 +130,10 @@ class Movie(SearchableMixin, db.Model):
 
     def get_cast(self):
         return self.cast.all()
+
+    def get_poster(self):
+        return b64encode(self.poster).decode("utf-8") if self.poster else self.poster
+
 
 class Ratings(db.Model):
     rating_id = db.Column(db.Integer, index=True, primary_key=True)
@@ -191,6 +194,9 @@ class Actor(db.Model):
 
     def is_liked(self, user_id):
         return not self.likes.filter_by(user_id=user_id).first() is None
+
+    def get_profile_pic(self):
+        return b64encode(self.profile_pic).decode("utf-8") if self.profile_pic else self.profile_pic
 
 
 class Likes(db.Model):

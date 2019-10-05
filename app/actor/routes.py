@@ -4,7 +4,6 @@ from flask import render_template, url_for, flash, redirect, abort
 from app.models import *
 from app import db
 from flask_login import current_user, login_required
-from base64 import b64encode
 
 
 @bp.route('/actors', methods=['GET'])
@@ -22,14 +21,10 @@ def get_actor(actor_id):
     add_award = AddAward()
     edit_actor_form = EditActor()
     actor = Actor.query.get(actor_id)
-    if not actor.profile_pic is None:
-        profile_pic = b64encode(actor.profile_pic).decode("utf-8")
-    else:
-        profile_pic = actor.profile_pic
     if actor is None:
         abort(404)
     else:
-        return render_template('actor.html', edit_actor_form=edit_actor_form, add_award=add_award, actor=actor, login_form=login_form, signup_form=signup_form, profile_pic=profile_pic)
+        return render_template('actor.html', edit_actor_form=edit_actor_form, add_award=add_award, actor=actor, login_form=login_form, signup_form=signup_form)
 
 
 @bp.route('/actor', methods=['GET', 'POST'])
@@ -41,7 +36,7 @@ def add_actor():
     movie_form = UploadMovie()
 
     if actor_form.validate_on_submit():
-        if actor_form.profile_img is None:
+        if actor_form.profile_img:
             profile_pic = actor_form.profile_img.data.read()
         else:
             profile_pic = actor_form.profile_img.data
@@ -63,7 +58,7 @@ def add_actor():
         db.session.add(actor)
         db.session.commit()
         flash("Actor Added Successfully")
-        return redirect(url_for('admin'))
+        return redirect(url_for('user.profile'))
     print(actor_form.errors)
     return render_template('admin.html', actor_form=actor_form, movie_form=movie_form)
 
@@ -77,7 +72,7 @@ def delete_actor(actor_id):
     db.session.delete(actor)
     db.session.commit()
     flash("Actor Deleted")
-    return redirect(url_for('admin'))
+    return redirect(url_for('user.profile'))
 
 @bp.route('/actor/<actor_id>/award', methods=['GET', 'POST'])
 def add_award(actor_id):
@@ -92,8 +87,8 @@ def add_award(actor_id):
         db.session.add(award)
         db.session.commit()
         flash("Award Added Successfully")
-        return redirect(url_for('get_actor', actor_id=actor_id))
-    return redirect(url_for('get_actor', actor_id=actor_id))
+        return redirect(url_for('actor.get_actor', actor_id=actor_id))
+    return redirect(url_for('actor.get_actor', actor_id=actor_id))
 
 
 @bp.route('/actor/<actor_id>/edit', methods=['GET', 'POST'])
@@ -101,7 +96,7 @@ def add_award(actor_id):
 def edit_actor(actor_id):
     if not current_user.is_admin():
         abort(401)
-    actor = Movie.query.get(actor_id)
+    actor = Actor.query.get(actor_id)
     edit_actor_form = EditActor()
     if edit_actor_form.validate_on_submit():
         actor.name = edit_actor_form.name.data
@@ -120,7 +115,7 @@ def edit_actor(actor_id):
         db.session.commit()
         flash("Your Changes have been Saved")
 
-        return redirect(url_for('get_actor', actor_id=actor_id))
-        return redirect(url_for('get_actor', actor_id=actor_id))
+        return redirect(url_for('actor.get_actor', actor_id=actor_id))
+        return redirect(url_for('actor.get_actor', actor_id=actor_id))
 
-    return redirect(url_for('get_actor', actor_id=actor_id))
+    return redirect(url_for('actor.get_actor', actor_id=actor_id))

@@ -22,7 +22,6 @@ class RegistrationForm(FlaskForm):
     #     'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
 
-
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
@@ -40,7 +39,6 @@ class UploadRating(FlaskForm):
     submit = SubmitField('Post')
 
 
-
 class UploadMovie(FlaskForm):
 
     title = StringField('Title')
@@ -100,7 +98,7 @@ class UploadMovie(FlaskForm):
 
     title = StringField('Title')
     industry = StringField('Industry')
-    description = TextField('Bio')
+    description = TextField('Description')
     writer = StringField('Writers')
     director = StringField('Director')
     storyline = TextField('Storyline')
@@ -114,6 +112,9 @@ class UploadMovie(FlaskForm):
     production_company = StringField('Production Company')
     run_time = StringField('Run Time')
     youtube_trailer = StringField('Youtube Trailer')
+    poster = FileField(label="Poster",
+                            validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Image Only!'),
+                            DataRequired()])
     submit = SubmitField('Add Movie')
 
 
@@ -133,7 +134,7 @@ class EditMovie(FlaskForm):
 
     title = StringField('Title')
     industry = StringField('Industry')
-    description = TextField('Bio')
+    description = TextField('Description')
     writer = StringField('Writers')
     director = StringField('Director')
     storyline = TextField('Storyline')
@@ -156,7 +157,6 @@ class AddAward(FlaskForm):
     name = StringField('Award Name')
     year = StringField('Award Year')
     submit = SubmitField('Add')
-
 
 
 class AddActor(FlaskForm):
@@ -172,7 +172,7 @@ class AddActor(FlaskForm):
     spouse_name = StringField('Spouse Name')
     father_name = StringField('Father Name')
     mother_name = StringField('Mother Name')
-    children = StringField('Children')
+    children = StringField('Number of Children')
     profile_img = FileField(label="Profile Image", validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Image Only!')])
     submit = SubmitField()
 
@@ -190,8 +190,8 @@ class EditActor(FlaskForm):
     father_name = StringField('Father Name')
     mother_name = StringField('Mother Name')
     children = StringField('Children')
-    profile_img = FileField(label="Profile Image", validators=[FileAllowed(['jpg', 'png', 'jpeg'], 'Image Only!'), DataRequired()])
     submit = SubmitField('Update')
+
 
 class SearchForm(FlaskForm):
     search_query = StringField('Search')

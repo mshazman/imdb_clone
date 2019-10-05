@@ -31,6 +31,7 @@ def signup():
 
     return render_template('index.html', signup_form=signup_form, login_form=login_form)
 
+
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     search_form = SearchForm()
@@ -51,6 +52,7 @@ def extract(movie_id):
     flash(f'Task Created...{task.id}')
     return jsonify(dic)
     # return redirect(url_for('index'))
+
 
 @app.route('/task/status/<task_id>')
 def status(task_id):

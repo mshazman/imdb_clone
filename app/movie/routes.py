@@ -14,6 +14,11 @@ def add_movie():
     movie_form = UploadMovie()
     # try:
     if movie_form.validate_on_submit():
+        title = movie_form
+        if movie_form.poster:
+            poster = movie_form.poster.data.read()
+        else:
+            poster = movie_form.poster.data
         movie = Movie(title=movie_form.title.data,
                       industry=movie_form.industry.data,
                       description=movie_form.description.data,
@@ -29,7 +34,9 @@ def add_movie():
                       box_office_gross=movie_form.box_office_gross.data,
                       production_company=movie_form.production_company.data,
                       run_time=movie_form.run_time.data,
-                      youtube=movie_form.youtube_trailer.data)
+                      youtube=movie_form.youtube_trailer.data,
+                      poster = poster)
+
         db.session.add(movie)
         db.session.commit()
         flash("Movie Added Succefully")
@@ -67,11 +74,12 @@ def add_cast(movie_id):
         db.session.add(cast)
         db.session.commit()
         flash(f'{actor_name} Added Succefully')
-        return redirect(url_for('index'))
+        return redirect('movie.movie', movie_id=movie_id)
     # except Exception:
     #     flash("Error Occured, Cast not Added")
     #     return redirect(url_for('index'))
-    return redirect(url_for('movie', movie_id))
+    return redirect(url_for('movie.movie', movie_id=movie_id))
+
 
 @bp.route('/movie/<movie_id>/edit', methods=['GET', 'POST'])
 @login_required
@@ -100,9 +108,9 @@ def edit_movie(movie_id):
         db.session.commit()
         flash("Your Changes have been Saved")
 
-        return redirect(url_for('movie', movie_id=movie_id))
+        return redirect(url_for('movie.movie', movie_id=movie_id))
 
-    return redirect(url_for('movie', movie_id))
+    return redirect(url_for('movie.movie', movie_id=movie_id))
 
 
 @bp.route('/movie/<movie_id>/delete', methods=['GET', 'POST'])
@@ -124,16 +132,16 @@ def movies():
     signup_form = RegistrationForm()
     return render_template('movies.html', movies=movies, title='Movies', login_form=login_form, signup_form=signup_form)
 
+
 @bp.route('/movie/<movie_id>', methods=['GET'])
 def movie(movie_id):
     cast_form = UploadCast()
     login_form = LoginForm()
     signup_form = RegistrationForm()
     edit_movie_form = EditMovie()
-    movie = Movie.query.get(movie_id)
     rating_form = UploadRating()
+    movie = Movie.query.get(movie_id)
     if not movie:
-        abort(400)
+        abort(404)
     else:
         return render_template('movie.html', movie=movie, rating_form=rating_form, cast_form=cast_form, login_form=login_form, signup_form=signup_form, edit_movie_form=edit_movie_form)
-

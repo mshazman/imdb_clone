@@ -5,7 +5,7 @@
     <div class="col-lg-9 ">
         <div class="row blue-grey lighten-5 padding-10">
             <div class="col-4">
-                <img src="data:image/png;base64, {{profile_pic}}" alt="Actor Image Not Avialable" class="img-fluid rounded-circle"
+                <img src="data:image/png;base64, {{actor.get_profile_pic()}}" alt="Actor Image Not Avialable" class="img-fluid rounded-circle"
                      height="200px" , width="200px">
             </div>
             <div class="col-8">
@@ -72,7 +72,7 @@
             <h3 class="h3-respomsive padding-10">Filmography</h3>
             <table class="table table-striped">
                 <tbody>
-                {% for cast in actor.movies %}
+                {% for cast in actor.movies.all() %}
                 <tr>
                     <td><a href="{{url_for('movie.movie',movie_id=cast.movie.id)}}">{{cast.movie.title}}</a></td>
                     <td>{{moment(cast.movie.release_date).format('YYYY')}}</td>

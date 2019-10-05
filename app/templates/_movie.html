@@ -1,18 +1,22 @@
 <div class="row blue-grey lighten-5">
     <div class="col-3 ">
         <br>
-        <img src="../static/img/poster_1.jpg" alt="" class="img-fluid rounded">
+        <img src="data:image/png;base64, {{movie.get_poster()}}" alt="" class="img-fluid rounded">
     </div>
     <div class="col-9">
         <br>
         <h4 class="h4-responsive"><a href="{{url_for('movie.movie',movie_id=movie.id)}}">{{movie.title}}</a></h4>
-        <p>Rating: 5.0</p>
+        <p>Rating: {{ '{:1.1f}'.format(movie.get_rating()[0]) }}</p>
         <p class="text-fluid">
             {{movie.description}}
         </p>
         <p>Director: <span style="color:blue;">{{movie.director}}</span> Stars:
             {% for cast in movie.cast[:3] %}
+            {% if cast.actor_id%}
+            <a style="color:blue;" href="{{url_for('actor.get_actor', actor_id=cast.actor_id)}}">{{cast.actor_name}},</a>
+            {% else %}
             <a style="color:blue;">{{cast.actor_name}},</a>
+            {% endif %}
             {% endfor %}
         </p>
         <p>Industry: <span style="color:blue;">{{movie.industry}}</span></p>

@@ -8,7 +8,8 @@ This project is a part of trainning in Mountblue Technologies Private Limited. I
 - Normal User can rate movie, like actor, edit rating and delete rating
 - Admin can add new movie, edit movie, delete movie, add actor, edit actor, and delete actor
 
-
+- Elastic Search
+- Celery
 
 ## Getting Started
 
@@ -60,3 +61,11 @@ WTForms==2.2.1
 ## Deployment
 
 - Project have docker file, using it create a container and deploy it anywhere
+
+
+## Function that may extend
+
+- Filter
+- GUI with AJAX
+- Creating API
+- 

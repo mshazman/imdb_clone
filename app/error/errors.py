@@ -18,6 +18,7 @@ def internal_error(error):
 def internal_error(error):
     return render_template('401.html'), 401
 
+
 @app.errorhandler(400)
 def internal_error(error):
     return render_template('400.html'), 400
