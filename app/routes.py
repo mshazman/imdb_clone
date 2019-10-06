@@ -35,12 +35,14 @@ def signup():
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     search_form = SearchForm()
+    login_form = LoginForm()
+    signup_form = RegistrationForm()
     print(search_form.search_query.data)
     if search_form.validate_on_submit():
         query = search_form.search_query.data
         movies, total = Movie.search(query, 1, 8)
     print(search_form.errors)
-    return render_template('search_result.html', movies=movies, total=total, search_form=search_form)
+    return render_template('search_result.html', movies=movies, total=total, search_form=search_form, login_form=login_form, signup_form=signup_form)
 
 
 @app.route('/extract/<movie_id>')
@@ -48,10 +50,7 @@ def extract(movie_id):
     task = extract_movies.delay([movie_id])
     dic = {}
     dic['id'] = task.id
-    # return jsonify(dic)
-    flash(f'Task Created...{task.id}')
     return jsonify(dic)
-    # return redirect(url_for('index'))
 
 
 @app.route('/task/status/<task_id>')

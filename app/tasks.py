@@ -47,7 +47,7 @@ def task_status(task_id):
     if task.state == 'PENDING':
         return {'state':'PENDING', 'progress':"0"}
     if task.state == 'PROGRESS':
-        return task.info
+        return {'state':'PROGRESS', 'progress':task.info['progress']}
     if task.state == 'SUCCESS':
         return {'state':'SUCCESS', 'progress':"100"}
     else:

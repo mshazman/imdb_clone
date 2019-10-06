@@ -5,7 +5,7 @@ __pycache__/
 .elasticsearch
 # C extensions
 *.so
-
+.flaskenv
 # Distribution / packaging
 .Python
 build/

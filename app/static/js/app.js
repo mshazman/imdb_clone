@@ -30,12 +30,12 @@ function send(task_id){
             if (data.state == 'PENDING')
             {
                 debugger;
-                document.getElementById('export_button').innerHTML = 'Exporting: ' + data.progress.toString() + '%'
+                document.getElementById('export_button').innerHTML = 'Exporting: ' + data.progress.toString()
                 document.getElementById('export_button').setAttribute('disabled', true)
             }
             else if(data.state=='PROGRESS')
             {
-                document.getElementById('export_button').innerHTML = 'Exporting: ' + data.progress.toString() + '%'
+                document.getElementById('export_button').innerHTML = 'Exporting: ' + data.progress.toString()
                 document.getElementById('export_button').setAttribute('disabled', true)
             }
             else if (data.state=='SUCCESS')
