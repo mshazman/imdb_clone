@@ -99,11 +99,15 @@ def unlike(actor_id):
     return redirect(url_for('actor.get_actor', actor_id=actor_id))
 
 
-@bp.route('/profile', methods=['GET', 'POST'])
+@bp.route('/admin', methods=['GET', 'POST'])
+@login_required
 def profile():
+    if not current_user.is_admin():
+        abort(401)
     actor_form = AddActor()
     movie_form = UploadMovie()
     return render_template('admin.html', actor_form=actor_form, movie_form=movie_form)
+
 
 @login_required
 @bp.route('/user/<user_id>')

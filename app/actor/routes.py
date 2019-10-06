@@ -9,22 +9,18 @@ from flask_login import current_user, login_required
 @bp.route('/actors', methods=['GET'])
 def actors():
     actors = Actor.query.all()
-    login_form = LoginForm()
-    signup_form = RegistrationForm()
-    return render_template('actors.html', title='Actors', actors=actors, login_form=login_form, signup_form=signup_form)
+    return render_template('actors.html', title='Actors', actors=actors)
 
 
 @bp.route('/actor/<actor_id>', methods=['GET'])
 def get_actor(actor_id):
-    login_form =LoginForm()
-    signup_form = RegistrationForm()
     add_award = AddAward()
     edit_actor_form = EditActor()
     actor = Actor.query.get(actor_id)
     if actor is None:
         abort(404)
     else:
-        return render_template('actor.html', edit_actor_form=edit_actor_form, add_award=add_award, actor=actor, login_form=login_form, signup_form=signup_form)
+        return render_template('actor.html', edit_actor_form=edit_actor_form, add_award=add_award, actor=actor)
 
 
 @bp.route('/actor', methods=['GET', 'POST'])

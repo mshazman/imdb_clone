@@ -1,48 +1,47 @@
 from app import app
 from app.forms import LoginForm, RegistrationForm, SearchForm
-from flask import render_template, url_for, flash, redirect, Response, jsonify
+from flask import render_template, url_for, flash, redirect, Response, jsonify, g
 from app.models import *
 from app import db
-from app import celery
+from flask_login import current_user
 from app.tasks import *
+
+
+@app.before_request
+def before_request():
+    g.search_form = SearchForm()
+    if current_user.is_anonymous:
+        g.login_form = LoginForm()
+        g.signup_form = RegistrationForm()
 
 
 @app.route('/')
 @app.route('/index')
 def index():
     movie = Movie.query.all()
-    login_form = LoginForm()
-    signup_form = RegistrationForm()
-    search_form = SearchForm()
-    return render_template('index.html', movies=movie, login_form=login_form, signup_form=signup_form, search_form=search_form)
+    return render_template('index.html', movies=movie)
 
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    signup_form = RegistrationForm()
-    login_form = LoginForm()
-    if signup_form.validate_on_submit():
-        user = User(username=signup_form.username.data, email=signup_form.email.data)
-        user.set_password(signup_form.password.data)
+    g.signup_form = RegistrationForm()
+    if g.signup_form.validate_on_submit():
+        user = User(username=g.signup_form.username.data, email=g.signup_form.email.data)
+        user.set_password(g.signup_form.password.data)
         db.session.add(user)
         db.session.commit()
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('index'))
-
-    return render_template('index.html', signup_form=signup_form, login_form=login_form)
+    return render_template('index.html')
 
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
-    search_form = SearchForm()
-    login_form = LoginForm()
-    signup_form = RegistrationForm()
-    print(search_form.search_query.data)
-    if search_form.validate_on_submit():
-        query = search_form.search_query.data
+    if g.search_form.validate_on_submit():
+        query = g.search_form.search_query.data
         movies, total = Movie.search(query, 1, 8)
-    print(search_form.errors)
-    return render_template('search_result.html', movies=movies, total=total, search_form=search_form, login_form=login_form, signup_form=signup_form)
+    print(g.search_form.errors)
+    return render_template('search_result.html', movies=movies, total=total)
 
 
 @app.route('/extract/<movie_id>')
@@ -57,6 +56,7 @@ def extract(movie_id):
 def status(task_id):
     status = task_status(task_id)
     return jsonify(status)
+
 
 @app.route('/task/result/<task_id>')
 def result(task_id):

@@ -38,14 +38,13 @@ IMDB : {{title}}
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
 
-                {% if search_form %}
+                {% if g.search_form %}
                 <form class="form-inline my-0" action="{{url_for('search')}}", method="post">
-                    {{search_form.hidden_tag()}}
+                    {{g.search_form.hidden_tag()}}
                     <div class="md-form my-1">
-                        {{search_form.search_query()}}
+                        {{g.search_form.search_query()}}
                     </div>
-
-                    {{search_form.submit()}}
+                    {{g.search_form.submit()}}
                 </form>
                 {% endif %}
                 <ul class="navbar-nav ml-auto">
@@ -103,26 +102,26 @@ IMDB : {{title}}
                 <!-- Modal body -->
                 <div class="modal-body">
                     <form action="{{url_for('user.login')}}" method="post">
-                        {{login_form.hidden_tag()}}
+                        {{g.login_form.hidden_tag()}}
                         <div class="md-form">
                             <i class="fa fa-envelope prefix"></i>
-                            {{login_form.username(id="form4", class="form-control")}}
+                            {{g.login_form.username(id="form4", class="form-control")}}
                             <label for="form4">Your username</label>
 
                         </div>
 
                         <div class="md-form">
                             <i class="fa fa-lock prefix"></i>
-                            {{login_form.password(id="form4", class="form-control")}}
+                            {{g.login_form.password(id="form4", class="form-control")}}
                             <label for="form4">Your password</label>
                         </div>
 
                         <fieldset class="form-group">
-                            {{login_form.remember_me(id="checkbox1")}}
+                            {{g.login_form.remember_me(id="checkbox1")}}
                             <label for="checkbox1">Remember Me</label>
                         </fieldset>
                         <div class="text-center">
-                            {{login_form.submit(class="btn btn-deep-purple")}}
+                            {{g.login_form.submit(class="btn btn-deep-purple")}}
                         </div>
                     </form>
 
@@ -156,26 +155,26 @@ IMDB : {{title}}
                 <!-- Modal body -->
                 <div class="modal-body">
                     <form action="{{url_for('signup')}}" method="post">
-                        {{signup_form.hidden_tag()}}
+                        {{g.signup_form.hidden_tag()}}
                         <div class="md-form">
                             <i class="fa fa-user prefix"></i>
-                            {{signup_form.username(id="form3", class="form-control")}}
+                            {{g.signup_form.username(id="form3", class="form-control")}}
                             <label for="form3">Your name</label>
                         </div>
                         <div class="md-form">
                             <i class="fa fa-envelope prefix"></i>
-                            {{signup_form.email(id="form3", class="form-control")}}
+                            {{g.signup_form.email(id="form3", class="form-control")}}
                             <label for="form2">Your email</label>
                         </div>
 
                         <div class="md-form">
                             <i class="fa fa-lock prefix"></i>
-                            {{signup_form.password(id="form3", class="form-control")}}
+                            {{g.signup_form.password(id="form3", class="form-control")}}
                             <label for="form4">Your password</label>
                         </div>
 
                         <div class="text-center">
-                            {{signup_form.submit(class="btn btn-indigo")}}
+                            {{g.signup_form.submit(class="btn btn-indigo")}}
                         </div>
                     </form>
                 </div>

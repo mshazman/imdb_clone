@@ -128,20 +128,16 @@ def delete_movie(movie_id):
 @bp.route('/movies', methods=['GET'])
 def movies():
     movies = Movie.query.all()
-    login_form = LoginForm()
-    signup_form = RegistrationForm()
-    return render_template('movies.html', movies=movies, title='Movies', login_form=login_form, signup_form=signup_form)
+    return render_template('movies.html', movies=movies, title='Movies')
 
 
 @bp.route('/movie/<movie_id>', methods=['GET'])
 def movie(movie_id):
     cast_form = UploadCast()
-    login_form = LoginForm()
-    signup_form = RegistrationForm()
     edit_movie_form = EditMovie()
     rating_form = UploadRating()
     movie = Movie.query.get(movie_id)
     if not movie:
         abort(404)
     else:
-        return render_template('movie.html', movie=movie, rating_form=rating_form, cast_form=cast_form, login_form=login_form, signup_form=signup_form, edit_movie_form=edit_movie_form)
+        return render_template('movie.html', movie=movie, rating_form=rating_form, cast_form=cast_form,edit_movie_form=edit_movie_form)
