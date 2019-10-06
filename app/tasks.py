@@ -38,7 +38,7 @@ def extract_movies(self, movies_list):
     filepath = './app/files/' + filename
     with open(filepath, 'w') as file:
         json.dump(movie_dic, file)
-    time.sleep(30)
+    time.sleep(3)
     return filename
 
 
