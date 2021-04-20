@@ -64,7 +64,7 @@ pluggy==0.13.0
 protobuf==3.9.2
 psycopg2-binary==2.8.3
 publib==0.3.3
-py==1.8.0
+py==1.10.0
 pycparser==2.19
 Pygments==2.4.2
 pyparsing==2.4.2
