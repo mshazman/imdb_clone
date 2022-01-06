@@ -10,7 +10,7 @@ attrs==19.2.0
 Babel==2.7.0
 beautifulsoup4==4.8.0
 billiard==3.5.0.5
-celery==4.1.1
+celery==5.2.2
 certifi==2019.9.11
 cffi==1.12.3
 chardet==3.0.4
