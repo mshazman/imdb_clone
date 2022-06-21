@@ -55,7 +55,7 @@ mpldatacursor==0.6.2
 mysql-connector-python==8.0.17
 numba==0.45.1
 numexpr==2.7.0
-numpy==1.17.2
+numpy==1.22.0
 numpydoc==0.9.1
 packaging==19.2
 Pint==0.9
