@@ -61,7 +61,7 @@ packaging==19.2
 Pint==0.9
 plotly==4.1.1
 pluggy==0.13.0
-protobuf==3.9.2
+protobuf==3.18.3
 psycopg2-binary==2.8.3
 publib==0.3.3
 py==1.8.0
